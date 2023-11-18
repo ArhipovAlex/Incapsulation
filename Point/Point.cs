@@ -100,5 +100,9 @@ namespace Point
         {
             Console.WriteLine($"X={x},\tY={y}");
         }
+        public double Distance(Point point)
+        {
+            return Math.Sqrt(Math.Pow(point.x - x,2)+Math.Pow(point.y-y,2));
+        }
     }
 }

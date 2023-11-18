@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -67,6 +68,43 @@ namespace Fraction
         {
             return left*right.Inverted();
         }
+        public static Fraction operator+(Fraction left_operand, Fraction right_operand)
+        {
+            Fraction left = new Fraction(left_operand);
+            Fraction right = new Fraction(right_operand);
+            int min_denom = left.Denominator < right.Denominator ? left.Denominator : right.Denominator;
+            int max_denom = left.Denominator > right.Denominator ? left.Denominator : right.Denominator;
+            int i = 0;
+            do
+                ++i;
+            while (min_denom * i % max_denom != 0);
+            return new Fraction(left.Integer+right.Integer, left.Numerator * ((min_denom * i) / left.Denominator) + right.Numerator * ((min_denom * i) / right.Denominator), min_denom * i);
+        }
+        public static Fraction operator-(Fraction left_operand, Fraction right_operand)
+        {
+            Fraction left = new Fraction(left_operand);
+            Fraction right = new Fraction(right_operand);
+            int new_int= left.Integer - right.Integer;
+            int min_denom = left.Denominator < right.Denominator ? left.Denominator : right.Denominator;
+            int max_denom = left.Denominator > right.Denominator ? left.Denominator : right.Denominator;
+            int i = 0;
+            do
+                ++i;
+            while (min_denom * i % max_denom != 0);
+            int new_num = 0;
+            if (left.Numerator < right.Numerator)
+            {
+                new_num = left.Numerator * ((min_denom * i) / left.Denominator) - right.Numerator * ((min_denom * i) / right.Denominator);
+            }
+            else
+            {
+                new_int--;
+                new_num = (min_denom * i) + (left.Numerator * (min_denom * i) / left.Denominator) - right.Numerator * ((min_denom * i) / right.Denominator);
+            }
+            return new Fraction(new_int,new_num, min_denom * i);
+        }
+        //          Increment-Decrement
+
         //          Methods:
         public Fraction ToImproper()
         {
